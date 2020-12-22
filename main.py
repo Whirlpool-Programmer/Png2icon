@@ -1,62 +1,77 @@
+'''import required modules:'''
+import tkinter
 import os
-from tkinter import *
 from PIL import Image
+from tkinter import filedialog
+from tkinter import messagebox
 
-def convert_to_ico(path):
+'''functions:'''
+
+#function to convert the png to icon
+def convert_to_ico(path,output):
+    global fileno
     filepath = path
     if os.path.exists(filepath) == True:
         if os.path.isfile(filepath) == True:
-            if Windows == 1:
-                pxs = [()]
             image = Image.open(filepath)
-            image.save("PNG.ico", format = 'ICO',sizes=pxs)
-            messagebox.showinfo("File conversion successful", "Your PNG file \"{}\" has been successfully converted to an ICO file".format(filepath))
+            image.save("{}Icon-{}.ico".format(output,fileno), format = 'ICO')
+            tkinter.messagebox.showinfo("File conversion successful", "Your Png file \"{}\" has been successfully converted to an Icon file".format(filepath))
+            fileno = fileno + 1
         else:
-            messagebox.showerror("Path is not a file", "\"{}\" is not a file".format(filepath))
+            tkinter.messagebox.showerror("Path is not a file", "\"{}\" is not a file".format(filepath))
     else:
-        messagebox.showerror("Path does not exists", "PNG file's path \"{}\" does not exists".format(filepath))
-        
-app = Tk()
-app.geometry('323x500')
-app.title("PNG to ICO")
+        tkinter.messagebox.showerror("Path does not exists", "Png file's path \"{}\" does not exists".format(filepath))
 
-path = StringVar()
+#function for dialog box to select png file
+def openFile(): 
+    file = tkinter.filedialog.askopenfilename(defaultextension=".png", filetypes=[("PNG files","*.png")])
+    path.set(file)    
 
-label = Label( app, text="")
-label.grid(row=1,column=0)
+#function for dialog box to select output folder
+def selectFolder():
+    folder = tkinter.filedialog.askdirectory()
+    output_location.set(folder + "/")
 
-filepath = Entry(app, textvariable=path, bg="gray")
+'''Scripts'''
+#making "app" a tkinter main window object
+app = tkinter.Tk()
+app.geometry('340x140')
+app.title("Png to Icon")
+app.wm_iconbitmap("favicon.ico")
+
+#making tkinter variables
+path = tkinter.StringVar()
+output_location = tkinter.StringVar()
+
+#giving variables initial value
+fileno = 1
+path.set('*.Png file location')
+output_location.set('C:\\Program Files\\Whirlpool-Programmer\\Png2Icon\\Images\\')
+
+#defining tkinter LabelFrames
+loc_input = tkinter.LabelFrame(app,text = "Input Location")
+loc_output = tkinter.LabelFrame(app,text = "Output location")
+convert_options = tkinter.LabelFrame(app,text = "Conversion Options")
+
+#giving tkinter LabelFrames their locations
+loc_input.grid(row=0,column=0)
+loc_output.grid(row = 3,column=0)
+convert_options.grid(row = 6,column =0)
+
+#making tkinter entries and buttons
+filepath = tkinter.Entry(loc_input, textvariable=path, fg = "white", bg="blue")
+outputpath = tkinter.Entry(loc_output, textvariable=output_location, fg = "white", bg="blue")
+explorefile = tkinter.Button(loc_input,text='>', command=lambda:openFile(), fg='white', bg='red', height=1, width=1)
+explorefolder = tkinter.Button(loc_output,text='>', command=lambda:selectFolder(), fg='white', bg='red', height=1, width=1)
+convertbutton = tkinter.Button(convert_options,text='Convert', command=lambda:convert_to_ico(path.get(),output_location.get()), fg='white', bg='green', height=1, width=30)
+
+#giving tkinter entries and buttons their locations
 filepath.grid(columnspan=1, ipadx=100)
+outputpath.grid(columnspan=1, ipadx=100)
+explorefile.grid(row=0, column=2)
+explorefolder.grid(row=0, column=2)
+convertbutton.grid(row = 0,column = 0)
 
-path.set('Path to PNG file')
-
-convertbutton = Button(app,text='Convert to ICO', command=lambda:convert_to_ico(path.get()), fg='black', bg='gray', height=1, width=30)
-convertbutton.grid(row=10, column=0)
-
-mb = Menubutton ( app, text="System", relief = "ridge",fg = 'black', bg = 'gray')
-mb.grid()
-mb.menu =  Menu ( mb, tearoff = 0 )
-mb["menu"] =  mb.menu
-Windows  = IntVar()
-MacOS    = IntVar()
-iOS      = IntVar()
-Linux    = IntVar()
-Android  = IntVar()
-WinPhone = IntVar()
-favicon  = IntVar()
-mb.menu.add_checkbutton ( label="Windows",
-                          variable=Windows )
-mb.menu.add_checkbutton ( label="macOS",
-                          variable=MacOS )
-mb.menu.add_checkbutton ( label="Linux",
-                          variable=Linux )
-mb.menu.add_checkbutton ( label="Android",
-                          variable=Android )
-mb.menu.add_checkbutton ( label="Windows Phone",
-                          variable=WinPhone )
-mb.menu.add_checkbutton ( label="iOS",
-                          variable=iOS)
-mb.menu.add_checkbutton ( label="favicon",
-                          variable=favicon )
-
+'''Mainloop'''
+#running the tkinter object "app"'s mainloop:
 app.mainloop()
