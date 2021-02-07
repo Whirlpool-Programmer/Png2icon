@@ -1,0 +1,19 @@
+Changelog
+
+v2.0:
+- The program creates a folder if it does not exists
+- The default output folder is set to "./images" (a folder named "images" in the program's folder) instead of "C:/Program files/Whirlpool-Programmer/Png2Ico/"
+- Added the feature to change the output file's name when it is saved
+- Added a defined height and width of the windows and made it not - resizable
+- Changed the program theme to "Lite Blue" instead of the standard white
+- Added Menu-Bar for accessing special commands
+- Special Commands:
+	- Help Menu:
+		- Website (http://www.github.com/whirlpool-programmer/png2ico)
+		- Changelog (complete changes record)
+		- About (Information of the software)
+	- Report Menu:
+		- Report Issues (Report the problems and issues with the software on the GitHub page)
+
+v1.0 :
+Initial Release
